@@ -1,6 +1,8 @@
 from flask import Flask, render_template
 app = Flask(__name__)
 
+application = app # our hosting requires application in passenger_wsgi
+
 @app.route("/")
 def home():
     return render_template("index.html")

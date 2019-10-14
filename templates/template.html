@@ -18,12 +18,14 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-4">
+                <img class="chilliprofile" src={{url_for('static', filename="images/chilliPlant.jpg")}} alt="chilli plant profile picture"> </div>
+            <div class="col-sm-8">
                 <h1>Chilli Plant Stats!</h1>
             </div>
+            
         </div>
-    </div>
-    <div class="container">
+    <hr>
     <ul class="nav nav-pills nav-fill green">
         <li class="nav-item">
           <a class="nav-link {{ 'active' if active_page == 'home' else '' }}" href={{ url_for('home')}}>Home</a>
@@ -38,6 +40,7 @@
     </div>
     <div class="container">
         <div id="content">{% block content %}{% endblock %}</div>
+        <a class="twitter-timeline" href="https://twitter.com/chilli_plant?ref_src=twsrc%5Etfw">Tweets by chilli_plant</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     </div>
 
 

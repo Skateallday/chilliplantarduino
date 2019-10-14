@@ -5,3 +5,9 @@
 .green .active a:hover {
     background-color: green;
 }
+
+.chilliprofile{
+    border-radius: 50px;
+    width:33%;
+    height:auto;
+}

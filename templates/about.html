@@ -18,8 +18,8 @@
         gather the water, light, temperature and humidity levels of a chilli plant and export them into this site right here! Our expected outcome from this project 
         is a pattern of data that will show exactly that the goldielocks area for growing a plant would be.</p>
     </div>
-    <div class="col-md-3 offset-md-3">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/pV3wyHat1h8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="col-sm-12">
+            <iframe src="https://www.youtube.com/embed/pV3wyHat1h8" frameborder="0" style="height:510px;width:100%;margin:10px 0"  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
     <div class="row">
 
@@ -29,8 +29,31 @@
         
         <p><a href="create.arduino.cc">Arduino Create</a> allows the use of creating apps for Arduinos online. This is helpful as it stores the code in the cloud so this project could be worked
         on from many different locations.</p>
+        <img class="setup" src={{url_for('static', filename="images/setup.png")}} alt="Arduino Schematic"> 
+
+        <p>
+            Arduino's run on functions that are complied in C/C++, a general purpose programming language that is relatively easy to pick up. Our project works by declaring a few empty global variables for moisture, temperature, humidity, the text string that will become a tweet and finally WiFi/ThingSpeak/Temboo credentials. 
+            It is important to set these variables outside of any function as they will be universally used. A few pins have to be declared for our LED and Sensors as well before we can setup the project.</p>
+        <p>
+            The project is set up as ThingSpeak is insigated and the LED state is set to low to turn the bulb off. This is important for later in the code.
+        </p>
+        <p>
+            After the setup is complete, the first and most important function is declared: loop(). This is where the life of the project is as this function will loop infinitely until it is told not to or the power supply to the Arduino is cut off. 
+            Within this loop we are going to gather the data from the sensors and assign them to the global variables we declared at the start of the project. We can use this data through if statements (a programming condination that will trigger a reaction if a target is met) to manipulate how the Tweet will turn out. 
+            Once the Tweet is sent, we call on a second function, thingSpeak(). These two systems work with different Wifi styles, Temboo needing SSL connection and thingSpeak not requiring it. This is why you can see the Wifi connection is destoryed before the calling of the second function.
+
+        </p>
+        <p>
+            Within this function, two other functions are called (printCurrentNet() and printInfo()) which write in the serial monitor. This is handy for debugging issues and you can see what process the Arduino is struggling with if the code does not show any errors. This function also sets 3 fields and assigns the correct global varibles to them before using a write API key to update the page. 
+        </p>
+        <p>
+            A delay time is included after this to loop this function every hour. This is done so that the data gathered does not become overwhelming and the Twitter feed does not fill out to fast. Also checking the plant every 15 seconds is a bit overkill when once an hour will suffice to show any changes in the moisture, temperature or humidity levels. 
+        </p>
+        <p>You can see our code below. It makes use of a few open source librarys including SparkFun, the creators of the moisture, temperature and humidity sensors used for detecting data within this project as well as everything spoken about above. </p>
+
         <iframe src=https://create.arduino.cc/editor/Skateallday/e3d167fc-66d8-45c6-8bba-540703848869/preview?embed style="height:510px;width:100%;margin:10px 0" frameborder=0></iframe>
     </div>
+    
 </div>
 {% endblock %}
 

@@ -12,9 +12,9 @@ def home():
 def plant1():
     return render_template("plant1.html")
 
-@app.route("/plant2")
-def plant2():
-    return render_template("plant2.html")
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 if __name__ == "__main__":
       app.run('localhost', 5000, debug=True)

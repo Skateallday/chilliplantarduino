@@ -1,0 +1,212 @@
+#include "SparkFun_Si7021_Breakout_Library.h"
+#include <Wire.h>
+#include "ThingSpeak.h"
+#include <SPI.h>
+#include <WiFi101.h>
+#include <WiFiSSLClient.h>
+#include <TembooSSL.h>
+#include "TembooAccount.h" // Contains Temboo account information
+#define SensorPin A0
+
+
+// Create instance of HTU21D or SI7021 temp. and humidity sensor
+Weather sensor;
+
+const int ledPin =  6;      // the number of the LED pin
+float sensorValue =0;
+float moisture =0;
+float humidity = 0;
+float temp = 0;
+int power = A3;
+int GND = A2;
+
+int calls = 1;   // Execution count, so this doesn't run forever
+int maxCalls = 10;   // Maximum number of times the Choreo should be executed
+
+// Create instance of WiFi client
+WiFiClient client;
+char ssid[] = SECRET_SSID;        //  your network SSID (name) 
+char pass[] = SECRET_PASSWORD;    // your network password (if needed)
+
+// Add yourThingSpeak channel information here
+unsigned long myChannelNumber = 924058;
+const char * myWriteAPIKey = "PKCCUVIEBBURBUY6";
+String moistureMessage = "Its a lovely day here in Edinburgh. ";
+
+
+//---------------------------------------------------------------
+void setup()
+{
+    Serial.begin(9600);   // open serial over USB at 9600 baud
+
+    // Initialise the I2C sensors and ping them
+    sensor.begin();
+    
+    // Initialise the ThingSpeak library
+    ThingSpeak.begin(client);
+      pinMode(power, OUTPUT);
+      pinMode(GND, OUTPUT);
+    
+      digitalWrite(power, HIGH);
+      digitalWrite(GND, LOW);
+      
+      // initialize the LED pin as an output:
+      pinMode(ledPin, OUTPUT);
+}
+
+
+//---------------------------------------------------------------
+void loop()
+{  for (int i = 0; i <= 100; i++)
+    {
+      sensorValue = sensorValue + analogRead(SensorPin);
+      delay(1);
+    }
+    sensorValue = sensorValue / 100.0;
+      Serial.print(sensorValue);
+
+   
+  
+    
+    if (sensorValue <=  50) {
+      moistureMessage =  "I am thirsty! Please water me! I'm running at ";
+      digitalWrite(ledPin, HIGH);
+
+    } else {
+      moistureMessage = "I am as happy as can be! No need to water me my moisture levels are ";
+      digitalWrite(ledPin, LOW);
+      
+    }
+  
+  moisture = sensorValue;
+  // Get the latest readings from the sensor
+  temp = sensor.getTemp();
+  humidity = sensor.getRH();
+  
+// Create instance of WiFi client
+WiFiSSLClient client;
+  int wifiStatus = WL_IDLE_STATUS;
+
+  // Determine if the WiFi Shield is present
+  Serial.print("\n\nShield:");
+  if (WiFi.status() == WL_NO_SHIELD) {
+    Serial.println("FAIL");
+
+    // If there's no WiFi shield, stop here
+    while (true);
+  }
+ 
+  Serial.println("OK");
+
+  // Try to connect to the local WiFi network
+  while (wifiStatus != WL_CONNECTED) {
+    Serial.print("WiFi:");
+    wifiStatus = WiFi.begin(WIFI_SSID, WPA_PASSWORD);
+
+    if (wifiStatus == WL_CONNECTED) {
+      Serial.println("OK");
+    } else {
+      Serial.println("FAIL");
+    }
+    delay(5000);
+  }
+  TembooChoreoSSL StatusesUpdateChoreo(client);
+
+  // Invoke the Temboo client
+  StatusesUpdateChoreo.begin();
+
+  // Set Temboo account credentials
+  StatusesUpdateChoreo.setAccountName(TEMBOO_ACCOUNT);
+  StatusesUpdateChoreo.setAppKeyName(TEMBOO_APP_KEY_NAME);
+  StatusesUpdateChoreo.setAppKey(TEMBOO_APP_KEY);
+  StatusesUpdateChoreo.setDeviceType(TEMBOO_DEVICE_TYPE);
+
+  // Set Choreo inputs
+  String StatusUpdateValue = String(moistureMessage) + String(moisture) + "%. The temperature in the room is " + String(temp) +" and the humidity is at " +String(humidity) + "%" ;
+  StatusesUpdateChoreo.addInput("StatusUpdate", StatusUpdateValue);
+  String AccessTokenValue = "1183699548444807174-6v3XqJi1AeaHsnxuup3386Sk4gR2to";
+  StatusesUpdateChoreo.addInput("AccessToken", AccessTokenValue);
+  String ConsumerKeyValue = "lteVKFWVaD3STvVKZohBpjLid";
+  StatusesUpdateChoreo.addInput("ConsumerKey", ConsumerKeyValue);
+  String ConsumerSecretValue = "iE2Yg2nxSfJRbVggSWnM1fd0c7EbnUG5eTcD8dJdsJrhPrZa2C";
+  StatusesUpdateChoreo.addInput("ConsumerSecret", ConsumerSecretValue);
+  String AccessTokenSecretValue = "RRgGmMWGxG4e8S593KuPy4fsaiEGEz8PgTBp5uInsSUtb";
+  StatusesUpdateChoreo.addInput("AccessTokenSecret", AccessTokenSecretValue);
+
+  // Identify the Choreo to run
+  StatusesUpdateChoreo.setChoreo("/Library/Twitter/Tweets/StatusesUpdate");
+
+  // Run the Choreo; when results are available, print them to serial
+  StatusesUpdateChoreo.run();
+
+
+  while (StatusesUpdateChoreo.available()) {
+    char c = StatusesUpdateChoreo.read();
+    Serial.print(c);
+  }
+  
+  StatusesUpdateChoreo.close();
+  
+  // Disconnects from the WiFi
+  WiFi.disconnect();
+  thingSpeak();
+}
+
+//---------------------------------------------------------------
+
+
+void thingSpeak() {
+  // Connects to the WiFi
+  // If the network does not need a password: WiFi.begin(ssid);
+  WiFi.begin(ssid, pass);
+  delay(10000);   // Waits 10 seconds to confirm connection
+  
+  // Print WiFi strength information
+  printCurrentNet();
+
+  
+  // Double-check if the field IDs are correct
+  ThingSpeak.setField(1, moisture);
+  ThingSpeak.setField(2, temp);
+  ThingSpeak.setField(3, humidity);
+  
+  // Upload sensor data to ThingSpeak
+  ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey); 
+
+  // Print sensor data to the Serial Monitor, so that we can
+  // double-check the correct values are being uploaded to ThingSpeak
+  printInfo();
+  
+  // Disconnects from the WiFi
+  WiFi.disconnect();
+  
+  
+  // ThingSpeak will only accept updates every 15 seconds
+  delay(3200000);
+}
+//---------------------------------------------------------------
+void printInfo()
+{
+  Serial.print("Time: ");
+  Serial.print(millis());
+  Serial.print("ms; ");
+  
+  Serial.print("Temp: ");
+  Serial.print(temp);
+  Serial.print("C; ");
+
+  Serial.print("Humidity: ");
+  Serial.print(humidity);
+  Serial.println("%");
+  Serial.println("");
+}
+
+
+//---------------------------------------------------------------
+void printCurrentNet() {
+  // Print the WiFi signal strength:
+  long rssi = WiFi.RSSI();
+  Serial.print("Signal strength (RSSI): ");
+  Serial.print(rssi);
+  Serial.println(" dBm");
+}

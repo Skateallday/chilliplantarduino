@@ -1,0 +1,38 @@
+{% extends "template.html" %}
+{% set active_page = "about" %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <h2>Want to read more?</h2>
+        
+    </div>
+    
+           
+       
+    <div class="row">
+       <p>This project was started as a piece of coursework for Edinburgh Napier University's Module Ubiquitous Computing. The outline of the project was to 
+        gather data from an everyday household object that could be considered useful. As chilli enuthesits, we decided to try to create a project that would
+        gather the water, light, temperature and humidity levels of a chilli plant and export them into this site right here! Our expected outcome from this project 
+        is a pattern of data that will show exactly that the goldielocks area for growing a plant would be.</p>
+    </div>
+    <div class="col-md-3 offset-md-3">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/pV3wyHat1h8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    <div class="row">
+
+        <p>The data is generated on an <a href="https://www.arduino.cc/en/Guide/MKR1000">Arduino MKR1000</a> which can connect to a WiFi signal at 2.4Ghz. This is important as the data created
+        needs to be uploaded to two different services for us to use it! <a href="https://temboo.com/">Temboo</a> and <a href="https://thingspeak.com/">ThingSpeak</a> are the systems used in this project.
+        Repectively they give us the ability to create Tweets when certain sections of our code are triggers and a space online to record the data we are genereating before turning them into beatiful graphics. </p>
+        
+        <p><a href="create.arduino.cc">Arduino Create</a> allows the use of creating apps for Arduinos online. This is helpful as it stores the code in the cloud so this project could be worked
+        on from many different locations.</p>
+
+
+        <a href="code.txt">Our Code can be seen here!</a>
+    </div>
+</div>
+{% endblock %}
+

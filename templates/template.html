@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
-
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Gothic+A1&display=swap" rel="stylesheet">
 
 </head>
@@ -21,7 +21,7 @@
             <div class="col-sm-4">
                 <img class="chilliprofile" src={{url_for('static', filename="images/chilliPlant.jpg")}} alt="chilli plant profile picture"> </div>
             <div class="col-sm-8">
-                <h1>Chilli Plant Stats!</h1>
+                <h1>Chilli Plant Stats</h1>
             </div>
             
         </div>
@@ -31,19 +31,21 @@
           <a class="nav-link {{ 'active' if active_page == 'home' else '' }}" href={{ url_for('home')}}>Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ 'active' if active_page == 'plant1' else '' }}" href={{ url_for('plant1') }}>Plant 1</a>
+          <a class="nav-link {{ 'active' if active_page == 'plant1' else '' }}" href={{ url_for('plant1') }}>Chilli Stats</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ 'active' if active_page == 'plant2' else '' }}" href={{ url_for('plant2') }}>Plant 2</a>
+          <a class="nav-link {{ 'active' if active_page == 'about' else '' }}" href={{ url_for('about') }}>About</a>
         </li>        
       </ul>
+    <hr>
     </div>
     <div class="container">
         <div id="content">{% block content %}{% endblock %}</div>
-        <a class="twitter-timeline" href="https://twitter.com/chilli_plant?ref_src=twsrc%5Etfw">Tweets by chilli_plant</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-    </div>
+    
 
-
+<footer>
+  <h5>Created by Group 3, Ubiquitous Computing, Edinburgh Napier</h5>
+</footer></div>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

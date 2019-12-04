@@ -5,6 +5,32 @@
 {% block content %}
 <div class="container">
     <div class="row">
+            <div class="col-sm-6">            
+                <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/924058/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=50&type=line&update=15"></iframe>
+            </div>
+            <div class="col-sm-6">
+                <h3>Moisture</h3>
+                <p>When it comes to growing indoor plants, correctly watering them can be the crux of what lets them flourish or perish. Without SparkFun moisture sensor we can detect how much water is in the soil to 2 decimal places, allowing us to quickly react if the plants start to dry up.</p>
+            </div>
+    </div>
+    <div class="row">
+            <div class="col-sm-6">                
+                <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/924058/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=50&type=line&update=15"></iframe>
+            </div>
+            <div class="col-sm-6">
+                <h3>Temperature</h3>
+                <p>Chilli plants tend to grow in warm places, so keeping the room temperature between 20 and 32 degrees celcuis is important for strong, healthy plants. Our SparkFun temperature probe shows us the temperature of the room the plant is in so we can either turn the heating up or open a window for the plants.</p>
+            </div>
+    </div>
+    <div class="row">
+            <div class="col-sm-6">                    
+                <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/924058/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=50&type=line&update=15"></iframe>
+            </div>
+            <div class="col-sm-6">
+                <h3>Humidity</h3>
+                <p>Along with checking the temperature, the sensor also takes in the moisture in the air, otherwise known as humidity. This is important to monitor in the plants as if the humidity in the air reaches above 70% it becomes a lot easier for the plants to become infected with diseases. .</p>
+            </div>
+
     </div>
 </div>
 {% endblock %}

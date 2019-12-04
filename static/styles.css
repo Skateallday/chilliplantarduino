@@ -1,5 +1,5 @@
 .green{
-    color:green;
+    background-color:#15202B;
 }
 .green .active a,
 .green .active a:hover {
@@ -10,4 +10,14 @@
     border-radius: 50px;
     width:33%;
     height:auto;
+}
+
+
+body{
+    background:#192734;
+    color:#fff;
+}
+
+h1, h2, h3, h4, h5{
+    font-family: 'Inconsolata', monospace;
 }

@@ -21,7 +21,7 @@ int power = A3;
 int GND = A2;
 
 int calls = 1;   // Execution count, so this doesn't run forever
-int maxCalls = 10;   // Maximum number of times the Choreo should be executed
+int maxCalls = 100;   // Maximum number of times the Choreo should be executed
 
 // Create instance of WiFi client
 WiFiClient client;
